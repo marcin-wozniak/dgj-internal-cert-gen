@@ -8,18 +8,14 @@
 # https://stackoverflow.com/questions/33827789/self-signed-certificate-dnsname-components-must-begin-with-a-letter
 
 #Todo
-#check netscape cert type requirements
-#check authority key identifier
 #check keytool compatibility acreoss jdk versions
-#check use of wildcards * in SAN
-#add creation of new directory for each passthrough
 #offer adding root and ca to cacerts?
-# add :critical modifier
+
 #####################################################################
 
-# Only OU is required, you can left the rest empty
+# Only OU is required, you can leave the rest empty
 OU="Atos GDC"
-O="qtos"
+O="atos"
 L="Wrocław"
 C="PL"
 
@@ -112,7 +108,7 @@ keytool -genkeypair \
     -keyalg RSA \
     -keysize 2048 \
     -keystore keystore.jks \
-    -dname "CN=*.domain.com, OU=$OU, O=$O, L=$L, C=$C" \
+    -dname "CN=$nginxDNS, OU=$OU, O=$O, L=$L, C=$C" \
     -storetype JKS \
     -storepass $secret1 \
     -keypass $secret2 2>/dev/null
@@ -251,6 +247,8 @@ keytool -importcert \
 
 echo 01-ri_keystore.jks
 keytool -importkeystore -srckeystore keystore.jks -srcstorepass $secret1 -destkeystore "01-ri_keystore.jks" -deststorepass $secret1 -srcalias ri-case -srckeypass $secret2  -destalias ri-case  -destkeypass $secret2 2>/dev/null
+keytool -exportcert -keystore keystore.jks -storepass $secret1 -alias connector -rfc -file conexp.pem 2>/dev/null
+keytool -importcert -noprompt -keystore "01-ri_keystore.jks" -storepass $secret1 -alias connector -file conexp.pem 2>/dev/null
 
 echo 02-connector_backend_keystore.jks
 keytool -importkeystore -srckeystore keystore.jks -srcstorepass $secret1 -destkeystore "02-connector_backend_keystore.jks" -deststorepass $secret1 -srcalias connector -srckeypass $secret2  -destalias connector -destkeypass $secret2 2>/dev/null
@@ -266,8 +264,7 @@ echo 04-connector_security_keystore.jks
 keytool -importkeystore -srckeystore keystore.jks -srcstorepass $secret1 -destkeystore "04-connector_security_keystore.jks" -deststorepass $secret1 -srcalias connector -srckeypass $secret2  -destalias connector -destkeypass $secret2 2>/dev/null
 
 echo 04-connector_security_truststore.jks
-keytool -exportcert -keystore keystore.jks -storepass $secret1 -alias connector -rfc -file conexp.pem 2>/dev/null
-keytool -importcert -noprompt -keystore "04-connector_security_truststore.jks" -storepass $secret1 -alias coneexp.pem -file conexp.pem 2>/dev/null
+keytool -importcert -noprompt -keystore "04-connector_security_truststore.jks" -storepass $secret1 -alias connector -file conexp.pem 2>/dev/null
 
 echo 05-connector_gatewaylink_keystore.jks
 keytool -importkeystore -srckeystore keystore.jks -srcstorepass $secret1 -destkeystore "05-connector_gatewaylink_keystore.jks" -deststorepass $secret1 -srcalias connector -srckeypass $secret2  -destalias connector -destkeypass $secret2 2>/dev/null
@@ -280,7 +277,7 @@ echo 06-gateway_connectorlink_keystore.jks
 keytool -importkeystore -srckeystore keystore.jks -srcstorepass $secret1 -destkeystore "06-gateway_connectorlink_keystore.jks" -deststorepass $secret1 -srcalias gateway -srckeypass $secret2  -destalias gateway -destkeypass $secret2 2>/dev/null
 
 echo 06-gateway_connectorlink_truststore.jks
-keytool -importcert -noprompt -keystore "06-gateway_connectorlink_truststore.jks" -storepass $secret1 -alias coneexp.pem -file conexp.pem 2>/dev/null
+keytool -importcert -noprompt -keystore "06-gateway_connectorlink_truststore.jks" -storepass $secret1 -alias connector -file conexp.pem 2>/dev/null
 
 echo 07-gateway_keystore.jks
 keytool -importkeystore -srckeystore keystore.jks -srcstorepass $secret1 -destkeystore "07-gateway_keystore.jks" -deststorepass $secret1 -srcalias gateway -srckeypass $secret2  -destalias gateway -destkeypass $secret2 2>/dev/null
