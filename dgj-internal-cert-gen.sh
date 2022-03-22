@@ -246,44 +246,159 @@ keytool -importcert \
 
 
 echo 01-ri_keystore.jks
-keytool -importkeystore -srckeystore keystore.jks -srcstorepass $secret1 -destkeystore "01-ri_keystore.jks" -deststorepass $secret1 -srcalias ri-case -srckeypass $secret2  -destalias ri-case  -destkeypass $secret2 2>/dev/null
-keytool -exportcert -keystore keystore.jks -storepass $secret1 -alias connector -rfc -file conexp.pem 2>/dev/null
-keytool -importcert -noprompt -keystore "01-ri_keystore.jks" -storepass $secret1 -alias connector -file conexp.pem 2>/dev/null
+keytool -importkeystore \
+        -srckeystore keystore.jks \
+        -srcstorepass $secret1 \
+        -destkeystore "01-ri_keystore.jks" \
+        -deststoretype JKS \
+        -deststorepass $secret1 \
+        -srcalias ri-case \
+        -srckeypass $secret2 \
+        -destalias ri-case \
+        -destkeypass $secret2 2>/dev/null
+
+keytool -exportcert \
+        -keystore keystore.jks \
+        -storepass $secret1 \
+        -alias connector \
+        -rfc \
+        -file conexp.pem 2>/dev/null
+
+keytool -importcert \
+        -noprompt \
+        -keystore "01-ri_keystore.jks" \
+        -storepass $secret1 \
+        -alias connector \
+        -file conexp.pem 2>/dev/null
 
 echo 02-connector_backend_keystore.jks
-keytool -importkeystore -srckeystore keystore.jks -srcstorepass $secret1 -destkeystore "02-connector_backend_keystore.jks" -deststorepass $secret1 -srcalias connector -srckeypass $secret2  -destalias connector -destkeypass $secret2 2>/dev/null
+keytool -importkeystore \
+        -srckeystore keystore.jks \
+        -srcstorepass $secret1 \
+        -destkeystore "02-connector_backend_keystore.jks" \
+        -deststoretype JKS \
+        -deststorepass $secret1 \
+        -srcalias connector \
+        -srckeypass $secret2  \
+        -destalias connector \
+        -destkeypass $secret2 2>/dev/null
 
 echo 02-connector_backend_truststore.jks
-keytool -exportcert -keystore keystore.jks -storepass $secret1 -alias ri-case -rfc -file ri-caseexp.pem 2>/dev/null
-keytool -importcert -noprompt -keystore 02-connector_backend_truststore.jks -storepass $secret1 -alias ri-case -file ri-caseexp.pem 2>/dev/null
+keytool -exportcert \
+        -keystore keystore.jks \
+        -storepass $secret1 \
+        -alias ri-case \
+        -rfc \
+        -file ri-caseexp.pem 2>/dev/null
+keytool -importcert \
+        -noprompt \
+        -keystore "02-connector_backend_truststore.jks" \
+        -deststoretype JKS \
+        -storepass $secret1 \
+        -alias ri-case \
+        -file ri-caseexp.pem 2>/dev/null
 
 echo 03-connector_evidence_keystore.jks
-keytool -importkeystore -srckeystore keystore.jks -srcstorepass $secret1 -destkeystore "03-connector_evidence_keystore.jks" -deststorepass $secret1 -srcalias connector -srckeypass $secret2  -destalias connector -destkeypass $secret2 2>/dev/null
+keytool -importkeystore \
+        -srckeystore keystore.jks \
+        -srcstorepass $secret1 \
+        -destkeystore "03-connector_evidence_keystore.jks" \
+        -deststoretypeJKS \
+        -deststorepass $secret1 \
+        -srcalias connector \
+        -srckeypass $secret2  \
+        -destalias connector \
+        -destkeypass $secret2 2>/dev/null
 
 echo 04-connector_security_keystore.jks
-keytool -importkeystore -srckeystore keystore.jks -srcstorepass $secret1 -destkeystore "04-connector_security_keystore.jks" -deststorepass $secret1 -srcalias connector -srckeypass $secret2  -destalias connector -destkeypass $secret2 2>/dev/null
+keytool -importkeystore \
+        -srckeystore keystore.jks \
+        -srcstorepass $secret1 \
+        -destkeystore "04-connector_security_keystore.jks" \
+        -deststoretype JKS \
+        -deststorepass $secret1 \
+        -srcalias connector \
+        -srckeypass $secret2 \
+        -destalias connector \
+        -destkeypass $secret2 2>/dev/null
 
 echo 04-connector_security_truststore.jks
-keytool -importcert -noprompt -keystore "04-connector_security_truststore.jks" -storepass $secret1 -alias connector -file conexp.pem 2>/dev/null
+keytool -importcert \
+        -noprompt \
+        -keystore "04-connector_security_truststore.jks" \
+        -deststoretype JKS \
+        -storepass $secret1 \
+        -alias connector \
+        -file conexp.pem 2>/dev/null
 
 echo 05-connector_gatewaylink_keystore.jks
-keytool -importkeystore -srckeystore keystore.jks -srcstorepass $secret1 -destkeystore "05-connector_gatewaylink_keystore.jks" -deststorepass $secret1 -srcalias connector -srckeypass $secret2  -destalias connector -destkeypass $secret2 2>/dev/null
+keytool -importkeystore \
+        -srckeystore keystore.jks \
+        -srcstorepass $secret1 \
+        -destkeystore "05-connector_gatewaylink_keystore.jks" \
+        -deststoretype JKS \
+        -deststorepass $secret1 \
+        -srcalias connector \
+        -srckeypass $secret2 \
+        -destalias connector \
+        -destkeypass $secret2 2>/dev/null
 
 echo 05-connector_gatewaylink_truststore.jks
-keytool -exportcert -keystore keystore.jks -storepass $secret1 -alias gateway -rfc -file gwexp.pem 2>/dev/null
-keytool -importcert -noprompt -keystore "05-connector_gatewaylink_truststore.jks" -storepass $secret1 -alias gateway -file gwexp.pem 2>/dev/null
+keytool -exportcert \
+        -keystore keystore.jks \
+        -storepass $secret1 \
+        -alias gateway \
+        -rfc \
+        -file gwexp.pem 2>/dev/null
+keytool -importcert \
+        -noprompt \
+        -keystore "05-connector_gatewaylink_truststore.jks" \
+        -deststoretype JKS \
+        -storepass $secret1 \
+        -alias gateway \
+        -file gwexp.pem 2>/dev/null
 
 echo 06-gateway_connectorlink_keystore.jks
-keytool -importkeystore -srckeystore keystore.jks -srcstorepass $secret1 -destkeystore "06-gateway_connectorlink_keystore.jks" -deststorepass $secret1 -srcalias gateway -srckeypass $secret2  -destalias gateway -destkeypass $secret2 2>/dev/null
+keytool -importkeystore \
+        -srckeystore keystore.jks \
+        -srcstorepass $secret1 \
+        -destkeystore "06-gateway_connectorlink_keystore.jks" \
+        -deststoretype JKS \
+        -deststorepass $secret1 \
+        -srcalias gateway \
+        -srckeypass $secret2 \
+        -destalias gateway \
+        -destkeypass $secret2 2>/dev/null
 
 echo 06-gateway_connectorlink_truststore.jks
-keytool -importcert -noprompt -keystore "06-gateway_connectorlink_truststore.jks" -storepass $secret1 -alias connector -file conexp.pem 2>/dev/null
+keytool -importcert \
+        -noprompt \
+        -keystore "06-gateway_connectorlink_truststore.jks" \
+        -deststoretype JKS \
+        -storepass $secret1 \
+        -alias connector \
+        -file conexp.pem 2>/dev/null
 
 echo 07-gateway_keystore.jks
-keytool -importkeystore -srckeystore keystore.jks -srcstorepass $secret1 -destkeystore "07-gateway_keystore.jks" -deststorepass $secret1 -srcalias gateway -srckeypass $secret2  -destalias gateway -destkeypass $secret2 2>/dev/null
+keytool -importkeystore \
+        -srckeystore keystore.jks \
+        -srcstorepass $secret1 \
+        -destkeystore "07-gateway_keystore.jks" \
+        -deststoretype JKS \
+        -deststorepass $secret1 \
+        -srcalias gateway \
+        -srckeypass $secret2 \
+        -destalias gateway \
+        -destkeypass $secret2 2>/dev/null
 
 echo 07-gateway_truststore.jks
-keytool -importcert -noprompt -keystore 07-gateway_truststore.jks -storepass $secret1 -alias gateway -file gwexp.pem 2>/dev/null
+keytool -importcert \
+        -noprompt \
+        -keystore "07-gateway_truststore.jks" \
+        -deststoretype JKS \
+        -storepass $secret1 \
+        -alias gateway \
+        -file gwexp.pem 2>/dev/null
 
 directory=dgj.`date +%Y%m%d_%H%M%S`
 mkdir $directory
