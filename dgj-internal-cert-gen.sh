@@ -19,9 +19,9 @@ O="atos"
 L="Wrocław"
 C="PL"
 
-#Password for keystores. You can change it later
+#Password for keystores. Minimum 6 characters. You can change it later
 secret1="password"
-#Password for keypairs. You can change it later
+#Password for keypairs. Minimum 6 characters. You can change it later
 secret2="password"
 
 gatewayDNS="gateway.domain.com"
@@ -160,7 +160,7 @@ keytool -certreq \
                 -ext SubjectAlternativeName=DNS:$gatewayDNS,DNS:gateway \
                 -rfc > gateway.pem 2>/dev/null
 
-cat root.pem ca.pem gateway.pem > gatewaychain.pem
+cat gateway.pem root.pem > gatewaychain.pem
 
 keytool -importcert \
         -noprompt \
@@ -185,7 +185,7 @@ keytool -certreq \
                 -ext SubjectAlternativeName=DNS:$connectorDNS,DNS:connector \
                 -rfc > connector.pem 2>/dev/null
 
-cat root.pem ca.pem connector.pem > connectorchain.pem
+cat  connector.pem root.pem > connectorchain.pem
 
 keytool -importcert \
         -noprompt \
@@ -210,7 +210,7 @@ keytool -certreq \
                 -ext SubjectAlternativeName=DNS:$ricaseDNS,DNS:ri-case \
                 -rfc > ri-case.pem 2>/dev/null
 
-cat root.pem ca.pem ri-case.pem > ri-casechain.pem
+cat  ri-case.pem root.pem > ri-casechain.pem
 
 keytool -importcert \
         -noprompt \
@@ -233,9 +233,9 @@ keytool -certreq \
                 -ext KeyUsage:critical=digitalSignature,keyEncipherment \
                 -ext ExtendedKeyUsage=clientAuth,serverAuth,emailProtection \
                 -ext SubjectAlternativeName=DNS:$nginxDNS,DNS:nginx \
-                -rfc > nginx.pem 2>/dev/null
+                -rfc > nginxexp.pem 2>/dev/null
 
-cat root.pem ca.pem nginx.pem > nginxchain.pem
+cat  nginxexp.pem root.pem > nginxchain.pem
 
 keytool -importcert \
         -noprompt \
