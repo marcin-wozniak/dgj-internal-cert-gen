@@ -303,7 +303,7 @@ keytool -importkeystore \
         -srckeystore keystore.jks \
         -srcstorepass $secret1 \
         -destkeystore "03-connector_evidence_keystore.jks" \
-        -deststoretypeJKS \
+        -deststoretype JKS \
         -deststorepass $secret1 \
         -srcalias connector \
         -srckeypass $secret2  \
